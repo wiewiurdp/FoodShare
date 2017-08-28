@@ -9,9 +9,10 @@ class DefaultController extends Controller
 {
     /**
      * @Route("/")
+     * @Route("/index")
      */
     public function indexAction()
     {
-        return $this->render('FoodBundle:Default:index.html.twig');
+        return $this->render('default/index.html.twig');
     }
 }

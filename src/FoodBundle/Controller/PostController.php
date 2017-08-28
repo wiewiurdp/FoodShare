@@ -3,9 +3,12 @@
 namespace FoodBundle\Controller;
 
 use FoodBundle\Entity\Post;
+use MongoDB\BSON\Timestamp;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Validator\Constraints\Date;
 
 /**
  * Post controller.
@@ -46,12 +49,15 @@ class PostController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var Post $post */
             $post = $form->getData();
-            $file = $post->getPhoto();
-            $fileName = md5(uniqid()).'.'.$file->guessExtension();
-            $file->move(
-                $this->getParameter('photo_directory'), $fileName
-            );
-            $post->setPhoto($fileName);
+            $post->setCreationDate();
+            if ($post->getPhoto()) {
+                $file = $post->getPhoto();
+                $fileName = md5(uniqid()) . '.' . $file->guessExtension();
+                $file->move(
+                    $this->getParameter('photo_directory'), $fileName
+                );
+                $post->setPhoto($fileName);
+            }
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($post);
@@ -139,7 +145,6 @@ class PostController extends Controller
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('post_delete', array('id' => $post->getId())))
             ->setMethod('DELETE')
-            ->getForm()
-        ;
+            ->getForm();
     }
 }

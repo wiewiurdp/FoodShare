@@ -111,12 +111,34 @@ class Post
     private $expiration;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(name="photo", type="string", nullable=true)
      *
      * @Assert\File()
      * @Assert\Image()
      */
     private $photo;
+
+    /**
+     * @ORM\Column(name="creation_date", type="datetime", nullable=true)
+     *
+     */
+    private $creationDate;
+
+    /**
+     * @return mixed
+     */
+    public function getCreationDate()
+    {
+        return $this->creationDate;
+    }
+
+    /**
+     * @param mixed $creationDate
+     */
+    public function setCreationDate()
+    {
+        $this->creationDate = new \DateTime("now");
+    }
 
     /**
      * @return mixed

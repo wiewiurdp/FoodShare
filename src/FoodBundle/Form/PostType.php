@@ -23,7 +23,7 @@ class PostType extends AbstractType
                 [
                     'choices' =>
                         [
-                            '' => 'null',
+                            'Wybierz' => 'null',
                             'Zupa' => 'soup',
                             'Danie Główne' => 'main',
                             'Deser' => 'dessert',
@@ -37,7 +37,7 @@ class PostType extends AbstractType
                 [
                     'choices' =>
                         [
-                            '' => 'null',
+                            'Wybierz' => 'null',
                             'Zupa - krem' => 'creamSoup',
                             'Zupa - z makaronem' => 'noodleSoup',
                             'Zupa - z ziemniakami' => 'potatoSoup',
@@ -93,9 +93,9 @@ class PostType extends AbstractType
                 [
                     'choices' =>
                         [
-                            'tak' => 'true',
-                            'nie' => 'false',
-                            'a ja wiem?' => 'n/a',
+                            'tak' => 'tak',
+                            'nie' => 'nie',
+                            'a ja wiem?' => 'a ja wiem?',
                         ],
                     'choices_as_values' => true,
                     'expanded' => true,
@@ -106,21 +106,27 @@ class PostType extends AbstractType
                 [
                     'choices' =>
                         [
-                            'tak' => 'true',
-                            'nie' => 'false',
-                            'a ja wiem?' => 'n/a',
+                            'tak' => 'tak',
+                            'nie' => 'nie',
+                            'a ja wiem?' => 'a ja wiem?',
                         ],
                     'choices_as_values' => true,
                     'expanded' => true,
-                    'label' => 'Ma gluten?'
+                    'label' => 'Ma gluten?',
                 ]
             )
-            ->add('expiration')
+            ->add('expiration', "datetime",['label'=>'Do kiedy trzeba zjeść?'])
             ->add('ingredients', 'entity', ['class' => 'FoodBundle\Entity\Ingredient',
                 'property' => 'name',
                 'multiple' => 'true',
-                'expanded' => true,])
-            ->add('photo', FileType::class, array('label' => 'Photo'));
+                'expanded' => true,
+                'label'=> 'Jakie składniki zawiera potrawa?'
+                ])
+            ->add('photo', FileType::class, [
+                    'label' => 'Photo',
+                    'required' => false
+                ]
+            );
 
     }
 

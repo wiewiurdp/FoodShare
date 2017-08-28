@@ -3,31 +3,41 @@
 {% block body %}
     <h1>Post</h1>
 
-    <table>
+    <table class="table">
         <tbody>
             <tr>
-                <th>Id</th>
-                <td>{{ post.id }}</td>
-            </tr>
-            <tr>
-                <th>Category</th>
+                <th>Kategoria</th>
                 <td>{{ post.category }}</td>
             </tr>
             <tr>
-                <th>Hotness</th>
+                <th>Podkategoria</th>
+                <td>{{ post.SubCategory }}</td>
+            </tr>
+            <tr>
+                <th>Ostrość</th>
                 <td>{{ post.hotness }}</td>
             </tr>
             <tr>
-                <th>Vegan</th>
+                <th>Wegańskie?</th>
                 <td>{{ post.vegan }}</td>
             </tr>
             <tr>
-                <th>Gluten</th>
+                <th>Ma gluten?</th>
                 <td>{{ post.gluten }}</td>
             </tr>
             <tr>
-                <th>Expiration</th>
+                <th>Do kiedy trzeba zjeść?</th>
                 <td>{% if post.expiration %}{{ post.expiration|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Składniki które zawiera potrawa:</th>
+                    {% for ingredient in post.ingredients %}
+                    <td>{{ ingredient.getName }}</td>
+                {% endfor %}
+            </tr>
+            <tr>
+                <th>Zdjęcie</th>
+                <td><img src="{{photo_directory}}/{{ post.photo }}"></td>
             </tr>
         </tbody>
     </table>
