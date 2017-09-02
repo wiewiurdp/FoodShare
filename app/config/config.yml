@@ -8,7 +8,7 @@ imports:
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: pl
-    photo_directory: '%kernel.root_dir%/web/uploads/images'
+    photo_directory: '%kernel.root_dir%/../web/uploads/images'
 
 framework:
     #esi: ~
@@ -38,9 +38,6 @@ twig:
     strict_variables: '%kernel.debug%'
     form:
         resources: ['bootstrap_3_layout.html.twig']
-    globals:
-        photo_directory: '%photo_directory%'
-
 # Doctrine Configuration
 doctrine:
     dbal:

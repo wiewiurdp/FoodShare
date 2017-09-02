@@ -24,10 +24,10 @@ class PostType extends AbstractType
                     'choices' =>
                         [
                             'Wybierz' => 'null',
-                            'Zupa' => 'soup',
-                            'Danie Główne' => 'main',
-                            'Deser' => 'dessert',
-                            'Sniadanie/kolacja' => 'breakfast'
+                            'Zupa' => 'Zupa',
+                            'Danie Główne' => 'Danie Główne',
+                            'Deser' => 'Deser',
+                            'Sniadanie/kolacja' => 'Sniadanie/kolacja'
                         ],
                     'choices_as_values' => true,
                     'label' => 'Kategoria',
@@ -38,35 +38,35 @@ class PostType extends AbstractType
                     'choices' =>
                         [
                             'Wybierz' => 'null',
-                            'Zupa - krem' => 'creamSoup',
-                            'Zupa - z makaronem' => 'noodleSoup',
-                            'Zupa - z ziemniakami' => 'potatoSoup',
-                            'Zupa - inna' => 'otherSoup',
-                            'Danie główne - klasyczne (mięso, ziemiaki, suruwówka)' => 'classicMain',
-                            'Danie główne - makaron' => 'pastaMain',
-                            'Danie główme - jednogarnkowe' => 'potMain',
-                            'Danie główne - ryba' => 'fishMain',
-                            'Danie główne - inne' => 'otherMain',
-                            'Deser - lody' => 'icecreamDessert',
-                            'Deser - ciasto' => 'cakeDessert',
-                            'Deser - budyń/kisiel' => 'puddingDessert',
-                            'Deser - inne' => 'otherDessert',
-                            'Śniadanie/kolacja - kanapki' => 'sandwichBreakfast',
-                            'Śniadanie/kolacja - tosty' => 'toastsBreakfast',
-                            'Śniadanie/kolacja - omlet' => 'omletBreakfast',
-                            'Śniadanie/kolacja - inne' => 'otherBreakfast',
+                            'Zupa - krem' => 'Zupa - krem',
+                            'Zupa - z makaronem' => 'Zupa - z makaronem',
+                            'Zupa - z ziemniakami' => 'Zupa - z ziemniakami',
+                            'Zupa - inna' => 'Zupa - inna',
+                            'Danie główne - klasyczne (mięso, ziemiaki, suruwówka)' => 'Danie główne - klasyczne (mięso, ziemiaki, suruwówka)',
+                            'Danie główne - makaron' => 'Danie główne - makaron',
+                            'Danie główne - jednogarnkowe' => 'Danie główne - jednogarnkowe',
+                            'Danie główne - ryba' => 'Danie główne - ryba',
+                            'Danie główne - inne' => 'Danie główne - inne',
+                            'Deser - lody' => 'Deser - lody',
+                            'Deser - ciasto' => 'Deser - ciasto',
+                            'Deser - budyń/kisiel' => 'Deser - budyń/kisiel',
+                            'Deser - inne' => 'Deser - inne',
+                            'Śniadanie/kolacja - kanapki' => 'Śniadanie/kolacja - kanapki',
+                            'Śniadanie/kolacja - tosty' => 'Śniadanie/kolacja - tosty',
+                            'Śniadanie/kolacja - omlet' => 'Śniadanie/kolacja - omlet',
+                            'Śniadanie/kolacja - inne' => 'Śniadanie/kolacja - inne',
                         ]
                     ,
                     'choices_as_values' => true,
                     'label' => 'Podkategoria',
                     'choice_attr' => function ($val, $key, $index) {
-                        if (strpos($val, 'Soup') !== false) {
+                        if (strpos($val, 'Zupa') !== false) {
                             return ['data-soups' => 'true', 'class' => 'hidden'];
-                        } elseif (strpos($val, 'Main') !== false) {
+                        } elseif (strpos($val, 'Danie główne') !== false) {
                             return ['data-mains' => 'true', 'class' => 'hidden'];
-                        } elseif (strpos($val, 'Dessert') !== false) {
+                        } elseif (strpos($val, 'Deser') !== false) {
                             return ['data-desserts' => 'true', 'class' => 'hidden'];
-                        } elseif (strpos($val, 'Breakfast') !== false) {
+                        } elseif (strpos($val, 'Śniadanie/kolacja') !== false) {
                             return ['data-breakfasts' => 'true', 'class' => 'hidden'];
                         } else {
                             return ['class' => ''];
@@ -74,8 +74,15 @@ class PostType extends AbstractType
                     },
                 ]
             )
-            ->
-            add('hotness', ChoiceType::class,
+            ->add('title', "text",
+                [
+                    "label"=>'Tytuł'
+                ])
+            ->add('description', "textarea",
+                [
+                    "label"=>'Krótki opis'
+                ])
+            ->add('hotness', ChoiceType::class,
                 [
                     'choices' =>
                         [
@@ -116,9 +123,10 @@ class PostType extends AbstractType
                 ]
             )
             ->add('expiration', "datetime",['label'=>'Do kiedy trzeba zjeść?'])
-            ->add('ingredients', 'entity', ['class' => 'FoodBundle\Entity\Ingredient',
+            ->add('ingredients', 'entity', [
+                'class' => 'FoodBundle\Entity\Ingredient',
                 'property' => 'name',
-                'multiple' => 'true',
+                'multiple' => true,
                 'expanded' => true,
                 'label'=> 'Jakie składniki zawiera potrawa?'
                 ])

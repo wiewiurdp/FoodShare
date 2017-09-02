@@ -11,7 +11,7 @@ $(document).ready(function () {
     $('#foodbundle_post_category').on('change', function () {
 
         switch ($(this).val()) {
-            case 'soup':
+            case 'Zupa':
                 if (soups.hasClass("hidden")) {
                     soups.toggleClass('hidden');
                 }
@@ -25,7 +25,7 @@ $(document).ready(function () {
                     breakfasts.toggleClass("hidden");
                 }
                 break;
-            case 'main':
+            case 'Danie Główne':
                 if (!soups.hasClass("hidden")) {
                     soups.toggleClass('hidden');
                 }
@@ -39,7 +39,7 @@ $(document).ready(function () {
                     breakfasts.toggleClass("hidden");
                 }
                 break;
-            case 'dessert':
+            case 'Deser':
                 if (!soups.hasClass("hidden")) {
                     soups.toggleClass('hidden');
                 }
@@ -53,7 +53,7 @@ $(document).ready(function () {
                     breakfasts.toggleClass("hidden");
                 }
                 break;
-            case 'breakfast':
+            case 'Śniadanie/kolacja':
                 if (!soups.hasClass("hidden")) {
                     soups.toggleClass('hidden');
                 }

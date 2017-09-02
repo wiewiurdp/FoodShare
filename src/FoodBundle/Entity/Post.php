@@ -67,20 +67,12 @@ class Post
     private $subCategory;
 
     /**
-     * @return string
+     * @var string
+     *
+     * @ORM\Column(name="title", type="string", length=120)
      */
-    public function getSubCategory()
-    {
-        return $this->subCategory;
-    }
+    private $title;
 
-    /**
-     * @param string $subCategory
-     */
-    public function setSubCategory($subCategory)
-    {
-        $this->subCategory = $subCategory;
-    }
 
     /**
      * @var int
@@ -125,6 +117,28 @@ class Post
     private $creationDate;
 
     /**
+     * @ORM\Column(name="description",  type="string", length=255)
+     *
+     */
+    private $description;
+
+    /**
+     * @return mixed
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param mixed $description
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+    }
+
+    /**
      * @return mixed
      */
     public function getCreationDate()
@@ -139,7 +153,21 @@ class Post
     {
         $this->creationDate = new \DateTime("now");
     }
+    /**
+     * @return string
+     */
+    public function getSubCategory()
+    {
+        return $this->subCategory;
+    }
 
+    /**
+     * @param string $subCategory
+     */
+    public function setSubCategory($subCategory)
+    {
+        $this->subCategory = $subCategory;
+    }
     /**
      * @return mixed
      */
@@ -279,5 +307,21 @@ class Post
     public function getExpiration()
     {
         return $this->expiration;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * @param string $title
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
     }
 }

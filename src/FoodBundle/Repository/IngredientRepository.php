@@ -12,4 +12,9 @@ use Doctrine\ORM\EntityRepository;
  */
 class IngredientRepository extends EntityRepository
 {
+//    public function findAllOrdered()
+//    {
+//        $this->findBy()
+//        return $this->findBy(array(), array('username' => 'ASC'));
+//    }
 }

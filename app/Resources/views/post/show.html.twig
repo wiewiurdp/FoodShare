@@ -14,6 +14,14 @@
                 <td>{{ post.SubCategory }}</td>
             </tr>
             <tr>
+                <th>Tytuł</th>
+                <td>{{ post.title }}</td>
+            </tr>
+            <tr>
+                <th>Krótki opis</th>
+                <td>{{ post.description }}</td>
+            </tr>
+            <tr>
                 <th>Ostrość</th>
                 <td>{{ post.hotness }}</td>
             </tr>
@@ -35,9 +43,10 @@
                     <td>{{ ingredient.getName }}</td>
                 {% endfor %}
             </tr>
-            <tr>
+            <tr> {% if (post.photo) %}
                 <th>Zdjęcie</th>
-                <td><img src="{{photo_directory}}/{{ post.photo }}"></td>
+                <td><img src="{{  asset('uploads/images/') ~ post.photo}}" class="imageSize"></td>
+                {%  endif %}
             </tr>
         </tbody>
     </table>

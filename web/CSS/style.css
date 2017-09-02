@@ -1,3 +1,7 @@
 .hidden {
     display: none;
 }
+.imageSize {
+    max-width: 300px;
+    max-height: 300px;
+}

@@ -27,7 +27,7 @@ class PostController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $posts = $em->getRepository('FoodBundle:Post')->findAll();
+        $posts = $em->getRepository('FoodBundle:Post')->findBy([],['creationDate' => 'DESC']);
 
         return $this->render('post/index.html.twig', array(
             'posts' => $posts,
@@ -42,7 +42,14 @@ class PostController extends Controller
      */
     public function newAction(Request $request)
     {
+
+//        Jak dostac sie do usera zeby sprawdzic kto jest zalogowany
+//        $user = $this->getUser();
+//        $post->getUser() === $user
+
+
         $post = new Post();
+        $post->setExpiration(new \DateTime());
         $form = $this->createForm('FoodBundle\Form\PostType', $post);
         $form->handleRequest($request);
 

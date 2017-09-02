@@ -1,16 +1,57 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Post creation</h1>
-    {% form_theme form 'bootstrap_3_layout.html.twig' %}
-    {{ form_start(form) }}
-        {{ form_widget(form) }}
-        <input type="submit" value="Create" />
-    {{ form_end(form) }}
-    <ul>
-        <li>
-            <a href="{{ path('post_index') }}">Pokaż wszystkie ogłoszenia</a>
-        </li>
-    </ul>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-5">
+                <h1>Dodaj potrawę</h1>
+                {% form_theme form 'bootstrap_3_layout.html.twig' %}
+                {{ form_start(form) }}
+                {{ form_label(form.category) }}
+                {{ form_widget(form.category) }}
+                <br>
+                {{ form_label(form.subCategory) }}
+                {{ form_widget(form.subCategory) }}
+                <br>
+                {{ form_label(form.title) }}
+                {{ form_widget(form.title) }}
+                <br>
+                {{ form_label(form.description) }}
+                {{ form_widget(form.description) }}
+                <br>
+                {{ form_label(form.hotness) }}
+                {{ form_widget(form.hotness) }}
+                <br>
+                {{ form_label(form.vegan) }}
+                {{ form_widget(form.vegan) }}
+                <br>
+                {{ form_label(form.gluten) }}
+                {{ form_widget(form.gluten) }}
+                <br>
+                {{ form_label(form.expiration) }}
+                {{ form_widget(form.expiration) }}
+                <br>
+                {{ form_label(form.ingredients) }}
+                <br>
+                {% for child in form.ingredients.children %}
+                    <div class="form-check form-check-inline">
+                        {{ form_widget(child) }}
+                    </div>
+                {% endfor %}
+                <br>
+                {{ form_widget(form.photo) }}
+                {{ form_widget(form.photo) }}
+                <br><br>
+                <input type="submit" value="Create"/>
+                {{ form_end(form) }}
+                <br>
+                <ul>
+                    <li>
+                        <a href="{{ path('post_index') }}">Pokaż wszystkie ogłoszenia</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 
