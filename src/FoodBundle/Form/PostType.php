@@ -27,7 +27,7 @@ class PostType extends AbstractType
                             'Zupa' => 'Zupa',
                             'Danie Główne' => 'Danie Główne',
                             'Deser' => 'Deser',
-                            'Sniadanie/kolacja' => 'Sniadanie/kolacja'
+                            'Śniadanie/kolacja' => 'Śniadanie/kolacja'
                         ],
                     'choices_as_values' => true,
                     'label' => 'Kategoria',

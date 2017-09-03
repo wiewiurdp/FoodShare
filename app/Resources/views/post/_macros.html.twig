@@ -1,0 +1,24 @@
+{% macro ordered(order, currentOrder, direction, field) %}
+
+    {% if order == currentOrder %}
+        {% if direction == 'asc' %}
+            <a href="{{ path(app.request.attributes.get('_route'),
+            app.request.attributes.get('_route_params')) }}?order={{ order }}&direction=desc">
+                {{ field }} <i class="fa fa-sort-asc" aria-hidden="true"></i>
+            </a>
+        {% else %}
+            <a href="{{ path(app.request.attributes.get('_route'),
+            app.request.attributes.get('_route_params')) }}?order={{ order }}&direction=asc">
+                {{ field }} <i class="fa fa-sort-desc" aria-hidden="true"></i>
+            </a>
+        {% endif %}
+
+    {% else %}
+        <a href="{{ path(app.request.attributes.get('_route'),
+        app.request.attributes.get('_route_params')) }}?order={{ order }}&direction=asc">
+            {{ field }}
+        </a>
+    {% endif %}
+
+
+{% endmacro %}

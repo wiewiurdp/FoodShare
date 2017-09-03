@@ -7,14 +7,14 @@
                 <h1>Dodaj potrawę</h1>
                 {% form_theme form 'bootstrap_3_layout.html.twig' %}
                 {{ form_start(form) }}
+                {{ form_label(form.title) }}
+                {{ form_widget(form.title) }}
+                <br>
                 {{ form_label(form.category) }}
                 {{ form_widget(form.category) }}
                 <br>
                 {{ form_label(form.subCategory) }}
                 {{ form_widget(form.subCategory) }}
-                <br>
-                {{ form_label(form.title) }}
-                {{ form_widget(form.title) }}
                 <br>
                 {{ form_label(form.description) }}
                 {{ form_widget(form.description) }}

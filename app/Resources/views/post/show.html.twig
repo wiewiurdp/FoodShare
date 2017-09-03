@@ -1,67 +1,82 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Post</h1>
+    <div class="row">
+        <div class="col-5 offset-1">
+            <h1>
+                <tr>
+                    <td>{{ post.title }}</td>
+                </tr>
+            </h1>
+            <br>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Kategoria</th>
-                <td>{{ post.category }}</td>
-            </tr>
-            <tr>
-                <th>Podkategoria</th>
-                <td>{{ post.SubCategory }}</td>
-            </tr>
-            <tr>
-                <th>Tytuł</th>
-                <td>{{ post.title }}</td>
-            </tr>
-            <tr>
-                <th>Krótki opis</th>
-                <td>{{ post.description }}</td>
-            </tr>
-            <tr>
-                <th>Ostrość</th>
-                <td>{{ post.hotness }}</td>
-            </tr>
-            <tr>
-                <th>Wegańskie?</th>
-                <td>{{ post.vegan }}</td>
-            </tr>
-            <tr>
-                <th>Ma gluten?</th>
-                <td>{{ post.gluten }}</td>
-            </tr>
-            <tr>
-                <th>Do kiedy trzeba zjeść?</th>
-                <td>{% if post.expiration %}{{ post.expiration|date('Y-m-d H:i:s') }}{% endif %}</td>
-            </tr>
-            <tr>
-                <th>Składniki które zawiera potrawa:</th>
-                    {% for ingredient in post.ingredients %}
-                    <td>{{ ingredient.getName }}</td>
-                {% endfor %}
-            </tr>
-            <tr> {% if (post.photo) %}
-                <th>Zdjęcie</th>
-                <td><img src="{{  asset('uploads/images/') ~ post.photo}}" class="imageSize"></td>
-                {%  endif %}
-            </tr>
-        </tbody>
-    </table>
+            <table class="table">
+                <tbody>
+                <tr>
+                    <th>Kategoria</th>
+                    <td>{{ post.category }}</td>
+                </tr>
+                <tr>
+                    <th>Podkategoria</th>
+                    <td>{{ post.SubCategory }}</td>
+                </tr>
+                <tr>
+                    <th>Krótki opis</th>
+                    <td>{{ post.description }}</td>
+                </tr>
+                <tr>
+                    <th>Ostrość</th>
+                    <td>{{ post.hotness }}</td>
+                </tr>
+                <tr>
+                    <th>Wegańskie?</th>
+                    <td>{{ post.vegan }}</td>
+                </tr>
+                <tr>
+                    <th>Ma gluten?</th>
+                    <td>{{ post.gluten }}</td>
+                </tr>
+                <tr>
+                    <th>Do kiedy trzeba zjeść?</th>
+                    <td>{% if post.expiration %}{{ post.expiration|date('d-m-Y H:i:s') }}{% endif %}</td>
+                </tr>
+                <tr>
+                    <th>Składniki:</th>
+                    <td>
+                        {% for ingredient in post.ingredients %}
+                            {{ ingredient.getName }},
+                        {% endfor %}
+                    </td>
+                    <th>Ilość porcji</th>
+                    <td>{{ post.portions }}</td>
+                </tr>
+                <tr> {% if (post.photo) %}
+                        <th>Zdjęcie</th>
+                        <td><img src="{{ asset('uploads/images/') ~ post.photo }}" class="imageSize"></td>
+                    {% endif %}
+                <tr>
+                    <th>Dodany</th>
+                    <td>{{ post.creationDate|date('d-m-Y H:i:s') }} przez użytkownika <a href="{{ path('show_user_posts', { 'userId': post.user.id }) }}"><b>{{ post.user.username }}</b></a></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 
     <ul>
         <li>
             <a href="{{ path('post_index') }}">Back to the list</a>
         </li>
-        <li>
-            <a href="{{ path('post_edit', { 'id': post.id }) }}">Edit</a>
-        </li>
-        <li>
-            {{ form_start(delete_form) }}
+        {% if post.user == app.user %}
+            <li>
+                <a href="{{ path('post_edit', { 'id': post.id }) }}">Edit</a>
+            </li>
+            <li>
+                {{ form_start(delete_form) }}
                 <input type="submit" value="Delete">
-            {{ form_end(delete_form) }}
-        </li>
+                {{ form_end(delete_form) }}
+            </li>
+        {% endif %}
+
     </ul>
 {% endblock %}

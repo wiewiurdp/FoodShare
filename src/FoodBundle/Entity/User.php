@@ -2,6 +2,7 @@
 
 namespace FoodBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -22,5 +23,33 @@ class User extends BaseUser
     {
         parent::__construct();
         // your own logic
+        $this->posts = new ArrayCollection();
     }
+
+    // ...
+
+    /**
+     * One User has Many Posts.
+     * @ORM\OneToMany(targetEntity="FoodBundle\Entity\Post", mappedBy="user")
+     */
+    private $posts;
+
+    /**
+     * @return mixed
+     */
+    public function getPosts()
+    {
+        return $this->posts;
+    }
+
+    /**
+     * @param mixed $posts
+     */
+    public function setPosts($posts)
+    {
+        $this->posts = $posts;
+    }
+    // ...
+
+
 }

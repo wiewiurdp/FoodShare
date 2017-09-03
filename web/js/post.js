@@ -10,6 +10,7 @@ $(document).ready(function () {
 
     $('#foodbundle_post_category').on('change', function () {
 
+        console.log($(this).val());
         switch ($(this).val()) {
             case 'Zupa':
                 if (soups.hasClass("hidden")) {
@@ -68,10 +69,9 @@ $(document).ready(function () {
                 }
                 break;
 
-
         }
     })
 
-})
+});
 
 

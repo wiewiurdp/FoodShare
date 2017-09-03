@@ -3,6 +3,7 @@
 namespace FoodBundle\Controller;
 
 use FoodBundle\Entity\Post;
+use FoodBundle\Entity\User;
 use MongoDB\BSON\Timestamp;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -23,16 +24,23 @@ class PostController extends Controller
      * @Route("/", name="post_index")
      * @Method("GET")
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
+        $order = $request->query->get('order');
+        $direction = $request->query->get('direction');
         $em = $this->getDoctrine()->getManager();
-
-        $posts = $em->getRepository('FoodBundle:Post')->findBy([],['creationDate' => 'DESC']);
-
+        if ($order && $direction) {
+            $posts = $em->getRepository('FoodBundle:Post')->findBy([], [$order => $direction]);
+        } else {
+            $posts = $em->getRepository('FoodBundle:Post')->findBy([], ['creationDate' => 'DESC']);
+        }
         return $this->render('post/index.html.twig', array(
             'posts' => $posts,
+            'order' => $order,
+            'direction' => $direction,
         ));
     }
+
 
     /**
      * Creates a new post entity.
@@ -42,10 +50,6 @@ class PostController extends Controller
      */
     public function newAction(Request $request)
     {
-
-//        Jak dostac sie do usera zeby sprawdzic kto jest zalogowany
-//        $user = $this->getUser();
-//        $post->getUser() === $user
 
 
         $post = new Post();
@@ -57,6 +61,7 @@ class PostController extends Controller
             /** @var Post $post */
             $post = $form->getData();
             $post->setCreationDate();
+            $post->setUser($this->getUser());
             if ($post->getPhoto()) {
                 $file = $post->getPhoto();
                 $fileName = md5(uniqid()) . '.' . $file->guessExtension();
@@ -103,6 +108,11 @@ class PostController extends Controller
      */
     public function editAction(Request $request, Post $post)
     {
+        if ($this->getUser() !== $post->getUser()) {
+            throw $this->createAccessDeniedException('Brak dostępu');
+        }
+
+
         $deleteForm = $this->createDeleteForm($post);
         $editForm = $this->createForm('FoodBundle\Form\PostType', $post);
         $editForm->handleRequest($request);
@@ -128,6 +138,9 @@ class PostController extends Controller
      */
     public function deleteAction(Request $request, Post $post)
     {
+        if ($this->getUser() !== $post->getUser()) {
+            throw $this->createAccessDeniedException('Brak dostępu');
+        }
         $form = $this->createDeleteForm($post);
         $form->handleRequest($request);
 
@@ -153,5 +166,30 @@ class PostController extends Controller
             ->setAction($this->generateUrl('post_delete', array('id' => $post->getId())))
             ->setMethod('DELETE')
             ->getForm();
+    }
+
+    /**
+     * Show one user posts.
+     *
+     * @Route("/{userId}/all/", name="show_user_posts")
+     * @Method("GET")
+     *
+     */
+    public function showUserPostsAction(Request $request, $userId)
+    {
+        $order = $request->query->get('order');
+        $direction = $request->query->get('direction');
+
+        $em = $this->getDoctrine()->getManager();
+        if ($order && $direction) {
+            $posts = $em->getRepository('FoodBundle:Post')->findBy(['user' => $userId], [$order => $direction]);
+        } else {
+            $posts = $em->getRepository('FoodBundle:Post')->findBy(['user' => $userId], ['creationDate' => 'DESC']);
+        }
+        return $this->render('post/showUserPost.html.twig', array(
+            'posts' => $posts,
+            'order' => $order,
+            'direction' => $direction,
+        ));
     }
 }

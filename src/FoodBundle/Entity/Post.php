@@ -44,6 +44,13 @@ class Post
     }
 
     /**
+     * Many Posts have One User.
+     * @ORM\ManyToOne(targetEntity="FoodBundle\Entity\User", inversedBy="posts")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     */
+    private $user;
+
+    /**
      * @var int
      *
      * @ORM\Column(name="id", type="integer")
@@ -123,6 +130,11 @@ class Post
     private $description;
 
     /**
+     * @ORM\Column(name="portions",  type="integer")
+     *
+     */
+    private $portions;
+    /**
      * @return mixed
      */
     public function getDescription()
@@ -153,6 +165,7 @@ class Post
     {
         $this->creationDate = new \DateTime("now");
     }
+
     /**
      * @return string
      */
@@ -168,6 +181,7 @@ class Post
     {
         $this->subCategory = $subCategory;
     }
+
     /**
      * @return mixed
      */
@@ -323,5 +337,37 @@ class Post
     public function setTitle($title)
     {
         $this->title = $title;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * @param mixed $user
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPortions()
+    {
+        return $this->portions;
+    }
+
+    /**
+     * @param mixed $portions
+     */
+    public function setPortions($portions)
+    {
+        $this->portions = $portions;
     }
 }

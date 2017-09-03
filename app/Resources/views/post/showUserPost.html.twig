@@ -2,16 +2,13 @@
 
 {% block body %}
     {% import 'post/_macros.html.twig' as siteMacros %}
-
     <div class="row">
         <div class="col-8 offset-1">
-            <h1>Lista ogłoszeń</h1>
+            <h1>Lista ogłoszeń użytkownika <b>{{ posts[0].user.username }}</b></h1>
             <table class="table">
                 <thead>
                 <tr>
-                    <th>
-                        {{ siteMacros.ordered('user',order, direction, 'Użytkownik') }}
-                    </th>
+                    <th>Użytkownik</th>
                     <th>
                         {{ siteMacros.ordered('title',order, direction, 'Tytuł') }}
                     </th>
@@ -24,7 +21,7 @@
                     <th>
                         {{ siteMacros.ordered('expiration',order, direction, 'Termin Przydatności') }}
                     </th>
-                    <th>Składniki:</th>
+                    <th>Składniki które zawiera potrawa:</th>
                     <th>Ilość porcji</th>
                     <th>Zdjęcie</th>
                 </tr>
@@ -32,14 +29,8 @@
                 <tbody>
                 {% for post in posts %}
                     <tr>
-                        <td>
-                            <a href="{{ path('show_user_posts', { 'userId': post.user.id }) }}">{{ post.user.username }}
-                            </a>
-                        </td>
-                        <td>
-                            <a href="{{ path('post_show', { 'id': post.id }) }}">{{ post.title }}
-                            </a>
-                        </td>
+                        <td>{{ post.user.username }}</td>
+                        <td><a href="{{ path('post_show', { 'id': post.id }) }}">{{ post.title }}</td>
                         <td>{{ post.category }}</td>
                         <td>{{ post.subCategory }}</td>
                         <td>{% if post.expiration %}{{ post.expiration|date('Y-m-d H:i:s') }}{% endif %}</td>
@@ -64,6 +55,10 @@
     <ul>
         <li>
             <a href="{{ path('post_new') }}">Create a new post</a>
+
+        </li>
+        <li>
+            <a href="{{ path('post_index') }}">Back</a>
         </li>
     </ul>
 {% endblock %}
