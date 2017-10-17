@@ -1,25 +1,24 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <div class="row">
-        <div class="col-5 offset-1">
-            <h1>Post edit</h1>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-5">
+                <br><br>
+                <h1 class="text-center">Edycja ogłoszenia</h1>
 
-            {{ form_start(edit_form) }}
-            {{ form_widget(edit_form) }}
-            <input type="submit" value="Edit"/>
-            {{ form_end(edit_form) }}
+                {{ form_start(edit_form) }}
+                {{ form_widget(edit_form) }}
+                <input class="btn btn-primary btn-md" type="submit" value="Edytuj"/>
+                {{ form_end(edit_form) }}
 
-            <ul>
-                <li>
-                    <a href="{{ path('post_index') }}">Back to the list</a>
-                </li>
-                <li>
-                    {{ form_start(delete_form) }}
-                    <input type="submit" value="Delete">
-                    {{ form_end(delete_form) }}
-                </li>
-            </ul>
+                {{ form_start(delete_form) }}
+                <br>
+                <input class="btn btn-danger btn-md" type="submit" value="Usuń">
+                {{ form_end(delete_form) }}
+                <br>
+                <a class="btn btn-primary btn-md" href="{{ path('post_index') }}">Wróć do listy</a>
+            </div>
         </div>
     </div>
 

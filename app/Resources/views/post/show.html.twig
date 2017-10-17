@@ -2,16 +2,25 @@
 
 {% block body %}
     <div class="row">
-        <div class="col-5 offset-1">
-            <h1>
+        <div class="col-8 offset-2">
+            <h1 class="text-center">
+                <br>
                 <tr>
-                    <td>{{ post.title }}</td>
+                    <td>{{ post.title }} <a class="btn btn-primary btn-md"
+                                            href="{{ path('post_edit', { 'id': post.id }) }}">  Edytuj</a></td>
+
                 </tr>
             </h1>
             <br>
 
             <table class="table">
                 <tbody>
+                <tr>
+                    <th>Dodany</th>
+                    <td>{{ post.creationDate|date('d-m-Y H:i:s') }} przez użytkownika <a
+                                href="{{ path('show_user_posts', { 'userId': post.user.id }) }}"><b>{{ post.user.username }}</b></a>
+                    </td>
+                </tr>
                 <tr>
                     <th>Kategoria</th>
                     <td>{{ post.category }}</td>
@@ -47,36 +56,51 @@
                             {{ ingredient.getName }},
                         {% endfor %}
                     </td>
-                    <th>Ilość porcji</th>
-                    <td>{{ post.portions }}</td>
                 </tr>
                 <tr> {% if (post.photo) %}
                         <th>Zdjęcie</th>
                         <td><img src="{{ asset('uploads/images/') ~ post.photo }}" class="imageSize"></td>
                     {% endif %}
+                </tr>
                 <tr>
-                    <th>Dodany</th>
-                    <td>{{ post.creationDate|date('d-m-Y H:i:s') }} przez użytkownika <a href="{{ path('show_user_posts', { 'userId': post.user.id }) }}"><b>{{ post.user.username }}</b></a></td>
+                    <th>Ilość porcji</th>
+                    <td>{{ post.portions }}</td>
+                </tr>
+                <tr>
+                    <th></th>
+                    <td>
+                        {% if post.portions == 0 %}
+                            Nie mozna rezerwować - brak porcji
+                        {% else %}
+                            <form action="{{ path('post_show',{"id":post.id}) }}" method="post">
+                                <button class="btn btn-success btn-md" name="action" type="submit" value="reserve">
+                                    Rezerwuj
+                                </button>
+                            </form>
+                        {% endif %}
+                    </td>
                 </tr>
                 </tbody>
             </table>
+
+
+            <br>
+            {% if post.user == app.user %}
+
+
+
+                {{ form_start(delete_form) }}
+                <br>
+                <input class="btn btn-danger btn-md" type="submit" value="Usuń">
+                {{ form_end(delete_form) }}
+                <br>
+                <a class="btn btn-primary btn-md" href="{{ path('post_index') }}">Wróć do listy</a>
+            {% endif %}
         </div>
     </div>
 
     <ul>
-        <li>
-            <a href="{{ path('post_index') }}">Back to the list</a>
-        </li>
-        {% if post.user == app.user %}
-            <li>
-                <a href="{{ path('post_edit', { 'id': post.id }) }}">Edit</a>
-            </li>
-            <li>
-                {{ form_start(delete_form) }}
-                <input type="submit" value="Delete">
-                {{ form_end(delete_form) }}
-            </li>
-        {% endif %}
+
 
     </ul>
 {% endblock %}

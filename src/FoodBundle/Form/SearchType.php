@@ -11,11 +11,8 @@ use Symfony\Component\Form\Extension\Core\Type\RadioType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class PostType extends AbstractType
+class SearchType extends AbstractType
 {
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -23,7 +20,7 @@ class PostType extends AbstractType
                 [
                     'choices' =>
                         [
-                            'Wybierz' => 'null',
+                            'Wybierz' => 'dowolna',
                             'Zupa' => 'Zupa',
                             'Danie Główne' => 'Danie Główne',
                             'Deser' => 'Deser',
@@ -31,12 +28,13 @@ class PostType extends AbstractType
                         ],
                     'choices_as_values' => true,
                     'label' => 'Kategoria',
-                ])
+                ]
+            )
             ->add('subCategory', ChoiceType::class,
                 [
                     'choices' =>
                         [
-                            'Wybierz' => 'null',
+                            'Wybierz' => 'dowolna',
                             'Zupa - krem' => 'Zupa - krem',
                             'Zupa - z makaronem' => 'Zupa - z makaronem',
                             'Zupa - z ziemniakami' => 'Zupa - z ziemniakami',
@@ -71,54 +69,46 @@ class PostType extends AbstractType
                             return ['class' => ''];
                         }
                     },
-                ])
-            ->add('title', "text",
-                [
-                    "label" => 'Tytuł'
-                ])
-            ->add('description', "textarea",
-                [
-                    "label" => 'Krótki opis'
-                ])
+                ]
+            )
             ->add('hotness', ChoiceType::class,
                 [
                     'choices' =>
                         [
+                            'Dowolna' => 'dowolna',
                             'Nie ostre' => '1',
                             'Lekko ostre' => '2',
                             'Średnio ostre' => '3',
                             'Bardzo ostre' => '4'
                         ],
                     'choices_as_values' => true,
-                    'multiple' => false,
-                    'expanded' => true,
                     'label' => 'Ostrość'
                 ])
             ->add('vegan', ChoiceType::class,
                 [
                     'choices' =>
                         [
+                            'Dowolna' => 'dowolna',
                             'tak' => 'tak',
                             'nie' => 'nie',
-                            'a ja wiem?' => 'a ja wiem?',
                         ],
                     'choices_as_values' => true,
-                    'expanded' => true,
                     'label' => 'Wegańskie?'
                 ])
             ->add('gluten', ChoiceType::class,
                 [
                     'choices' =>
                         [
+                            'Dowolna' => 'dowolna',
                             'tak' => 'tak',
                             'nie' => 'nie',
-                            'a ja wiem?' => 'a ja wiem?',
                         ],
                     'choices_as_values' => true,
-                    'expanded' => true,
                     'label' => 'Ma gluten?',
                 ])
-            ->add('expiration', "datetime", ['label' => 'Do kiedy trzeba zjeść?'])
+            ->add('expiration', "datetime", [
+                'label' => 'Minimalny termina przydatności?'
+            ])
             ->add('ingredients', 'entity', [
                 'class' => 'FoodBundle\Entity\Ingredient',
                 'property' => 'name',
@@ -126,19 +116,10 @@ class PostType extends AbstractType
                 'expanded' => true,
                 'label' => 'Jakie składniki zawiera potrawa?'
             ])
-            ->add('portions', "integer", ['label' => 'Ilość porcji'])
-            ->add('photo', FileType::class, [
-                    'data_class' => null,
-                    'label' => 'Photo',
-                    'required' => false
-                ]
-            );
+            ->add('portions', "integer", ['label' => 'Minimalna ilość porcji?']);
 
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
@@ -146,13 +127,8 @@ class PostType extends AbstractType
         ));
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix()
     {
         return 'foodbundle_post';
     }
-
-
 }

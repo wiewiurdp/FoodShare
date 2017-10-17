@@ -1,7 +1,6 @@
 // soups.append();
 // console.log(soups);
 
-// var children = $('#foodbundle_post_category').children();
 $(document).ready(function () {
     var soups = $('#foodbundle_post_subCategory').find('[data-soups]');
     var mains = $('#foodbundle_post_subCategory').find('[data-mains]');
@@ -10,7 +9,6 @@ $(document).ready(function () {
 
     $('#foodbundle_post_category').on('change', function () {
 
-        console.log($(this).val());
         switch ($(this).val()) {
             case 'Zupa':
                 if (soups.hasClass("hidden")) {

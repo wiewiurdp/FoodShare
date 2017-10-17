@@ -3,8 +3,9 @@
 {% block body %}
     {% import 'post/_macros.html.twig' as siteMacros %}
     <div class="row">
-        <div class="col-8 offset-1">
-            <h1>Lista ogłoszeń użytkownika <b>{{ posts[0].user.username }}</b></h1>
+        <div class="col-8 offset-2"><br><br>
+            <h1 class="text-center">Lista ogłoszeń użytkownika <b>{{ posts[0].user.username }}</b></h1>
+            <br>
             <table class="table">
                 <thead>
                 <tr>
@@ -21,8 +22,10 @@
                     <th>
                         {{ siteMacros.ordered('expiration',order, direction, 'Termin Przydatności') }}
                     </th>
-                    <th>Składniki które zawiera potrawa:</th>
-                    <th>Ilość porcji</th>
+                    <th>Składniki:</th>
+                    <th>
+                        {{ siteMacros.ordered('portions',order, direction, 'Ilość porcji') }}
+                    </th>
                     <th>Zdjęcie</th>
                 </tr>
                 </thead>
@@ -51,14 +54,4 @@
             </table>
         </div>
     </div>
-
-    <ul>
-        <li>
-            <a href="{{ path('post_new') }}">Create a new post</a>
-
-        </li>
-        <li>
-            <a href="{{ path('post_index') }}">Back</a>
-        </li>
-    </ul>
-{% endblock %}
+  {% endblock %}
