@@ -104,8 +104,7 @@ class PostController extends Controller
             $post = $form->getData();
             $session = new Session();
             $session->set('post', $post);
-            return $this->redirectToRoute('result_form', array(
-            ));
+            return $this->redirectToRoute('result_form', array());
         }
         return $this->render('post/search.html.twig', array(
             'form' => $form->createView(),
@@ -124,7 +123,7 @@ class PostController extends Controller
     {
         $order = $request->query->get('order');
         $direction = $request->query->get('direction');
-        $session= new Session();
+        $session = new Session();
         $post = $session->get('post');
         $em = $this->getDoctrine()->getManager();
         if ($order && $direction) {
@@ -183,10 +182,22 @@ class PostController extends Controller
 
 
         $deleteForm = $this->createDeleteForm($post);
-        $editForm = $this->createForm('FoodBundle\Form\PostType', $post);
+        $editForm = $this->createForm('FoodBundle\Form\EditPostType', $post);
+        $temporaryPhoto = $post->getPhoto();
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
+
+            if ($post->getPhoto()) {
+                $file = $post->getPhoto();
+                $fileName = md5(uniqid()) . '.' . $file->guessExtension();
+                $file->move(
+                    $this->getParameter('photo_directory'), $fileName
+                );
+                $post->setPhoto($fileName);
+            } else {
+                $post->setPhoto($temporaryPhoto);
+            }
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('post_edit', array('id' => $post->getId()));
