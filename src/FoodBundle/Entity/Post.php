@@ -22,6 +22,28 @@ class Post
     private $ingredients;
 
     /**
+     * Many Posts have many Transaction
+     * @ORM\ManyToMany(targetEntity="FoodBundle\Entity\Transaction", mappedBy="posts")
+     */
+    private $transactions;
+
+    /**
+     * @return mixed
+     */
+    public function getTransactions()
+    {
+        return $this->transactions;
+    }
+
+    /**
+     * @param mixed $transactions
+     */
+    public function setTransactions($transactions)
+    {
+        $this->transactions = $transactions;
+    }
+
+    /**
      * @return ArrayCollection
      */
     public function getIngredients()
@@ -41,6 +63,7 @@ class Post
     public function __construct()
     {
         $this->ingredients = new ArrayCollection();
+        $this->transactions = new ArrayCollection();
     }
 
     /**
@@ -49,6 +72,8 @@ class Post
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
     private $user;
+
+
 
     /**
      * @var int
@@ -134,6 +159,28 @@ class Post
      *
      */
     private $portions;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="ratingAmount", type="decimal", scale=2, nullable=TRUE)
+     */
+    private $ratingAmount;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="rating", type="decimal", scale=2, nullable=TRUE)
+     */
+    private $rating;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="ratingSum", type="decimal", scale=2, nullable=TRUE)
+     */
+    private $ratingSum;
+
     /**
      * @return mixed
      */
@@ -275,6 +322,54 @@ class Post
     public function getVegan()
     {
         return $this->vegan;
+    }
+
+    /**
+     * @return float
+     */
+    public function getRatingAmount()
+    {
+        return $this->ratingAmount;
+    }
+
+    /**
+     * @param float $ratingAmount
+     */
+    public function setRatingAmount($ratingAmount)
+    {
+        $this->ratingAmount = $ratingAmount;
+    }
+
+    /**
+     * @return float
+     */
+    public function getRating()
+    {
+        return $this->rating;
+    }
+
+    /**
+     * @param float $rating
+     */
+    public function setRating($rating)
+    {
+        $this->rating = $rating;
+    }
+
+    /**
+     * @return float
+     */
+    public function getRatingSum()
+    {
+        return $this->ratingSum;
+    }
+
+    /**
+     * @param float $ratingSum
+     */
+    public function setRatingSum($ratingSum)
+    {
+        $this->ratingSum = $ratingSum;
     }
 
     /**

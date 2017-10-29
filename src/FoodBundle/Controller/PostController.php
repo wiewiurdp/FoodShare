@@ -3,6 +3,7 @@
 namespace FoodBundle\Controller;
 
 use FoodBundle\Entity\Post;
+use FoodBundle\Entity\Transaction;
 use FoodBundle\Entity\User;
 use MongoDB\BSON\Timestamp;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -150,12 +151,24 @@ class PostController extends Controller
     public
     function showAction(Request $request, Post $post)
     {
+        $message = null;
         if ($request->request->get('action') === "reserve") {
             if ($post->getPortions() > 0) {
-                $post->setPortions($post->getPortions() - 1);
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($post);
-                $em->flush();
+                if ($post->getUser() != $this->getUser()) {
+                    $post->setPortions($post->getPortions() - 1);
+                    $transaction = new Transaction();
+                    $transaction->setUser($this->getUser());
+                    $transaction->setPosts([$post]);
+                    $transaction->setPortions(1);
+                    $transaction->setOrderDate();
+                    $em = $this->getDoctrine()->getManager();
+                    $em->persist($post);
+                    $em->persist($transaction);
+                    $em->flush();
+//                TODO: add sending email form
+                } else {
+                    $message = 'Nie możesz rezerwować własnych posiłków';
+                }
             }
         }
         $deleteForm = $this->createDeleteForm($post);
@@ -164,6 +177,7 @@ class PostController extends Controller
             'post' => $post,
             'delete_form' => $deleteForm->createView(),
             'user' => $this->getUser(),
+            'message' => $message,
         ));
     }
 

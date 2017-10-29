@@ -7,7 +7,7 @@
                 <br>
                 <tr>
                     <td>{{ post.title }} <a class="btn btn-primary btn-md"
-                                            href="{{ path('post_edit', { 'id': post.id }) }}">  Edytuj</a></td>
+                                            href="{{ path('post_edit', { 'id': post.id }) }}"> Edytuj</a></td>
 
                 </tr>
             </h1>
@@ -76,6 +76,12 @@
                                 <button class="btn btn-success btn-md" name="action" type="submit" value="reserve">
                                     Rezerwuj
                                 </button>
+                                <br><br>
+                                <div class="red">
+                                    {% if message %}
+                                        {{ message }}
+                                    {% endif %}
+                                </div>
                             </form>
                         {% endif %}
                     </td>

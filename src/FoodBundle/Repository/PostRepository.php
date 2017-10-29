@@ -37,11 +37,9 @@ class PostRepository extends EntityRepository
         $em = $this->getEntityManager();
         $gb = $em->createQueryBuilder()
             ->select('p')
-
             ->from('FoodBundle:Post', 'p')
             ->where('p.portions > 0 and p.expiration> :time and p.expiration > :expiration')
             ->orderBy($order, $direction)
-
             ->setParameter('time', date('Y-m-d H:i:s'))
             ->setParameter('expiration', $post->getExpiration());
 
@@ -68,10 +66,11 @@ class PostRepository extends EntityRepository
                 ->setParameter('gluten', $post->getGluten());
         }
         if (true) {
-             $gb->innerJoin('p.ingredients','i')
-        ->andWhere('i.name = :ingredient AND i.name = :ingredient2')
-        ->setParameter('ingredient', "Cebula")
-        ->setParameter('ingredient2', "Pomidory");
+            $gb->innerJoin('p.ingredients', 'i')
+                ->andWhere('i.name = :ingredient')
+                ->andWhere('i.name = :ingredient2')
+                ->setParameter('ingredient', "Cebula")
+                ->setParameter('ingredient2', "Ziemniaki");
         }
 
 

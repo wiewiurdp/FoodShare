@@ -1,0 +1,89 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <div class="row">
+        <div class="col-8 offset-2">
+            <br>
+            <h1 class="text-center">Lista zarezerwowanych przec Ciebie dań</h1>
+            <br>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Potrawa</th>
+                    <th>Użytkownik który dzieli się daniem</th>
+                    <th>Adress</th>
+                    <th>Numer telefonu</th>
+                    <th>Ilość porcji</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for transaction in transactionsByUserId %}
+                {% for trans in transaction.posts %}
+                <tr>
+                    <td>
+                        <a href="{{ path('post_show', {'id': trans.id}) }}">   {{ trans.title }}</a>
+                    </td>
+                    <td>
+                        {{ trans.user.username }}
+                    </td>
+                    <td>
+                        {{ trans.user.address }}
+                    </td>
+                    <td>
+                        {{ trans.user.phoneNumber }}
+                    </td>
+                    <td>
+                        {{ transaction.portions }}
+                    </td>
+                </tr>
+                    {% endfor %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+<div class="row">
+    <div class="col-8 offset-2">
+        <br>
+        <h1 class="text-center">Lista zarezerwowanych u Ciebie dań</h1>
+        <br>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Użytkownik który zarezerwował u Ciebie danie</th>
+                <th>Potrawa</th>
+                <th>Adres</th>
+                <th>Numer telefonu</th>
+                <th>Ilość porcji</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for transaction in transactionsByPostUserId %}
+                {% for trans in transaction.posts %}
+                    <tr>
+                        <td>
+                            {{ transaction.user.username }}
+                        </td>
+                        <td>
+                            <a href="{{ path('post_show', {'id': trans.id}) }}">   {{ trans.title }}</a>
+                        </td>
+                        <td>
+                            {{ trans.user.address }}
+                        </td>
+                        <td>
+                            {{ trans.user.phoneNumber }}
+                        </td>
+                        <td>
+                            {{ transaction.portions }}
+                        </td>
+                    </tr>
+                {% endfor %}
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
