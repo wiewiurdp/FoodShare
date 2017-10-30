@@ -161,6 +161,8 @@ class PostController extends Controller
                     $transaction->setPosts([$post]);
                     $transaction->setPortions(1);
                     $transaction->setOrderDate();
+                    $transaction->setRating(0);
+                    $transaction->setCreationDate();
                     $em = $this->getDoctrine()->getManager();
                     $em->persist($post);
                     $em->persist($transaction);

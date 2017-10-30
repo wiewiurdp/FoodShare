@@ -50,6 +50,51 @@ class Transaction
     private $portions;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="rating", type="integer")
+     */
+    private $rating;
+
+    /**
+     * @ORM\Column(name="creation_date", type="datetime", nullable=true)
+     *
+     */
+    private $creationDate;
+
+    /**
+     * @return mixed
+     */
+    public function getCreationDate()
+    {
+        return $this->creationDate;
+    }
+
+    /**
+     * @param mixed $creationDate
+     */
+    public function setCreationDate()
+    {
+        $this->creationDate = new \DateTime("now");
+    }
+
+    /**
+     * @return int
+     */
+    public function getRating()
+    {
+        return $this->rating;
+    }
+
+    /**
+     * @param int $rating
+     */
+    public function setRating($rating)
+    {
+        $this->rating = $rating;
+    }
+
+    /**
      * @return mixed
      */
     public function getPortions()

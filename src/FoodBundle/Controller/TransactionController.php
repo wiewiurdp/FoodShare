@@ -5,7 +5,8 @@ namespace FoodBundle\Controller;
 use FoodBundle\Entity\Transaction;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Transaction controller.
@@ -18,12 +19,31 @@ class TransactionController extends Controller
      * Lists all transaction entities.
      *
      * @Route("/", name="transaction_index")
-     * @Method("GET")
+     * @Method({"GET", "POST"})
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
+        $rating = $request->request->get('rating');
+        $transactionId = $request->request->get('transactionId');
+        $postId = $request->request->get('postId');
+        $userId = $request->request->get('userId');
+
         $user = $this->getUser();
         $em = $this->getDoctrine()->getManager();
+
+        if ($rating != null) {
+            $transaction = $em->getRepository('FoodBundle:Transaction')->find($transactionId);
+            $transaction->setRating($rating);
+            $post = $em->getRepository('FoodBundle:Post')->find($postId);
+            $post->setRatingSum($rating + $post->getRatingSum());
+            $postUser = $em->getRepository('FoodBundle:User')->find($userId);
+            $postUser->setRatingSum($rating + $postUser->getRatingSum());
+            $em->persist($transaction);
+            $em->persist($post);
+            $em->persist($postUser);
+            $em->flush();
+        }
+
         $transactionsByUserId = $em->getRepository('FoodBundle:Transaction')->findFilteredOrderedByUserId($user);
         $transactionsByPoistUserId = $em->getRepository('FoodBundle:Transaction')->findFilteredOrderedByPostUserId($user);
 
@@ -134,7 +154,6 @@ class TransactionController extends Controller
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('transaction_delete', array('id' => $transaction->getId())))
             ->setMethod('DELETE')
-            ->getForm()
-        ;
+            ->getForm();
     }
 }

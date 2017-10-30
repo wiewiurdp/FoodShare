@@ -369,7 +369,11 @@ class Post
      */
     public function setRatingSum($ratingSum)
     {
+
         $this->ratingSum = $ratingSum;
+        $this->ratingAmount++;
+        $this->rating=$this->ratingSum/$this->ratingAmount;
+
     }
 
     /**

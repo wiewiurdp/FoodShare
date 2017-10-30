@@ -10,80 +10,102 @@
             <table class="table">
                 <thead>
                 <tr>
+                    <th>Data rezerwacji</th>
                     <th>Potrawa</th>
                     <th>Użytkownik który dzieli się daniem</th>
                     <th>Adress</th>
                     <th>Numer telefonu</th>
                     <th>Ilość porcji</th>
+                    <th>Ocena</th>
                 </tr>
                 </thead>
                 <tbody>
                 {% for transaction in transactionsByUserId %}
-                {% for trans in transaction.posts %}
-                <tr>
-                    <td>
-                        <a href="{{ path('post_show', {'id': trans.id}) }}">   {{ trans.title }}</a>
-                    </td>
-                    <td>
-                        {{ trans.user.username }}
-                    </td>
-                    <td>
-                        {{ trans.user.address }}
-                    </td>
-                    <td>
-                        {{ trans.user.phoneNumber }}
-                    </td>
-                    <td>
-                        {{ transaction.portions }}
-                    </td>
-                </tr>
+                    {% for trans in transaction.posts %}
+                        <tr>
+                            <td>
+                                {{ transaction.creationDate|date('d-m-Y H:i:s') }}
+                            </td>
+                            <td>
+                                <a href="{{ path('post_show', {'id': trans.id}) }}">   {{ trans.title }}</a>
+                            </td>
+                            <td>
+                                {{ trans.user.username }}
+                            </td>
+                            <td>
+                                {{ trans.user.address }}
+                            </td>
+                            <td>
+                                {{ trans.user.phoneNumber }}
+                            </td>
+                            <td>
+                                {{ transaction.portions }}
+                            </td>
+                            <td>
+                                {% if transaction.rating>0 %}
+                                    {{ transaction.rating }}
+                                {% else %}
+                                    <form method="post">
+                                        <input type="radio" name="rating" value="1"> 1
+                                        <input type="radio" name="rating" value="2"> 2
+                                        <input type="radio" name="rating" value="3"> 3
+                                        <input type="radio" name="rating" value="4"> 4
+                                        <input type="radio" name="rating" value="5"> 5
+                                        <input type="hidden" name="transactionId" value="{{transaction.id}}">
+                                        <input type="hidden" name="postId" value="{{trans.id}}">
+                                        <input type="hidden" name="userId" value="{{trans.user.id}}">
+                                        <input type="submit" value='Oceń' >
+                                    </form>
+                                {% endif %}
+                            </td>
+                        </tr>
                     {% endfor %}
-                    {% endfor %}
+                {% endfor %}
                 </tbody>
             </table>
         </div>
     </div>
 
 
-<div class="row">
-    <div class="col-8 offset-2">
-        <br>
-        <h1 class="text-center">Lista zarezerwowanych u Ciebie dań</h1>
-        <br>
-        <table class="table">
-            <thead>
-            <tr>
-                <th>Użytkownik który zarezerwował u Ciebie danie</th>
-                <th>Potrawa</th>
-                <th>Adres</th>
-                <th>Numer telefonu</th>
-                <th>Ilość porcji</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for transaction in transactionsByPostUserId %}
-                {% for trans in transaction.posts %}
-                    <tr>
-                        <td>
-                            {{ transaction.user.username }}
-                        </td>
-                        <td>
-                            <a href="{{ path('post_show', {'id': trans.id}) }}">   {{ trans.title }}</a>
-                        </td>
-                        <td>
-                            {{ trans.user.address }}
-                        </td>
-                        <td>
-                            {{ trans.user.phoneNumber }}
-                        </td>
-                        <td>
-                            {{ transaction.portions }}
-                        </td>
-                    </tr>
+    <div class="row">
+        <div class="col-8 offset-2">
+            <br>
+            <h1 class="text-center">Lista zarezerwowanych u Ciebie dań</h1>
+            <br>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Użytkownik który zarezerwował u Ciebie danie</th>
+                    <th>Potrawa</th>
+                    <th>Adres</th>
+                    <th>Numer telefonu</th>
+                    <th>Ilość porcji</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for transaction in transactionsByPostUserId %}
+                    {% for trans in transaction.posts %}
+                        <tr>
+                            <td>
+                                {{ transaction.user.username }}
+                            </td>
+                            <td>
+                                <a href="{{ path('post_show', {'id': trans.id}) }}">   {{ trans.title }}</a>
+                            </td>
+                            <td>
+                                {{ trans.user.address }}
+                            </td>
+                            <td>
+                                {{ trans.user.phoneNumber }}
+                            </td>
+                            <td>
+                                {{ transaction.portions }}
+                            </td>
+                        </tr>
+                    {% endfor %}
                 {% endfor %}
-            {% endfor %}
-            </tbody>
-        </table>
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
 {% endblock %}

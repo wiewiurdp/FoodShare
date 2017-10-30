@@ -15,7 +15,7 @@ class TransactionType extends AbstractType
     {
         $builder->add('user')->add('posts');
     }
-    
+
     /**
      * {@inheritdoc}
      */
