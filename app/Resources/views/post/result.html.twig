@@ -37,6 +37,11 @@
                     <tr>
                         <td>
                             <a href="{{ path('show_user_posts', { 'userId': post.user.id }) }}">{{ post.user.username }}
+                                {% if post.user.rating > 0 %}
+                                    {% for i in 1..post.user.rating %}
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                    {% endfor %}
+                                {% endif %}
                             </a>
                         </td>
                         <td>

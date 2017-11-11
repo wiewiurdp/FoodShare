@@ -35,7 +35,13 @@
                 {% for post in posts %}
                     <tr>
                         <td>
-                            <a href="{{ path('show_user_posts', { 'userId': post.user.id }) }}">{{ post.user.username }}
+                            <a href="{{ path('show_user_posts', { 'userId': post.user.id }) }}">
+                                {{ post.user.username }}<br>
+                                {% if post.user.rating > 0 %}
+                                {% for i in 1..post.user.rating %}
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                {% endfor %}
+                                {% endif %}
                             </a>
                         </td>
                         <td>
@@ -56,8 +62,14 @@
                                 <img src="{{ asset('uploads/images/') ~ post.photo }}" class="imageSize">
                             {% endif %}
                         </td>
+                        <td>
+
+                        </td>
                     </tr>
+
                 {% endfor %}
+
+
                 </tbody>
             </table>
         </div>

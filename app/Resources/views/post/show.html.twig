@@ -18,7 +18,13 @@
                 <tr>
                     <th>Dodany</th>
                     <td>{{ post.creationDate|date('d-m-Y H:i:s') }} przez użytkownika <a
-                                href="{{ path('show_user_posts', { 'userId': post.user.id }) }}"><b>{{ post.user.username }}</b></a>
+                                href="{{ path('show_user_posts', { 'userId': post.user.id }) }}"><b>{{ post.user.username }}
+                                {% if post.user.rating > 0 %}
+                                    {% for i in 1..post.user.rating %}
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                    {% endfor %}
+                                {% endif %}
+                            </b></a>
                     </td>
                 </tr>
                 <tr>
@@ -68,20 +74,32 @@
                 </tr>
                 <tr>
                     <th></th>
-                    <td>
+                    <td id="reserve">
                         {% if post.portions == 0 %}
                             Nie mozna rezerwować - brak porcji
                         {% else %}
-                            <form action="{{ path('post_show',{"id":post.id}) }}" method="post">
+                            <form action="{{ path('post_show',{"id":post.id})~'#reserve' }}" method="post">
+                                Ilość rezerwowanych poracji:<br>
+                                <input type="number" name="reservationQty" value="1">
+                                <br><br>
+                                <div>
+                                    {% if message %}
+                                        {{ message }}
+                                        <br><br>
+                                    {% endif %}
+                                </div>
+                                <div class="red">
+                                    {% if errorMessage %}
+                                        {{ errorMessage }}
+                                        <br><br>
+                                    {% endif %}
+                                </div>
                                 <button class="btn btn-success btn-md" name="action" type="submit" value="reserve">
                                     Rezerwuj
                                 </button>
-                                <br><br>
-                                <div class="red">
-                                    {% if message %}
-                                        {{ message }}
-                                    {% endif %}
-                                </div>
+
+
+
                             </form>
                         {% endif %}
                     </td>

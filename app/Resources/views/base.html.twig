@@ -10,12 +10,13 @@
     {% endblock %}
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"/>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet">
+
 </head>
 <body>
 <div class="header">
     <div>
-        Zalogowany jako:<b>{{ user }}</b>
-        <a href="index.html"><img src="{{ asset('images/logo.png') }}" alt="Logo"></a>
+        Zalogowany jako:<b>{{ user }}</b> <a class="right" href="{{ path('fos_user_security_logout') }}">Wyloguj</a>
+        <a href="{{ path('post_index') }}"><img src="{{ asset('images/logo.png') }}" alt="Logo"></a>
 
     </div>
 </div>
@@ -36,22 +37,20 @@
                     <a href="{{ path('search_form') }}">Szukaj</a>
                 </li>
                 <li>
-                    <a href="{{ path('transaction_index') }}">Twoje</a>
+                    <a href="{{ path('transaction_index') }}">Twoje rezerwacje</a>
                 </li>
-                <li>
-                    <a href="blog.html">Blog</a>
-                </li>
+
             </ul>
         </div>
     </div>
 </div>
 {% block body %}{% endblock %}
 <div class="footer">
-<div>
-    <p>
-        &copy; Copyright 2017. All rights reserved
-    </p>
-</div>
+    <div>
+        <p>
+            &copy; Copyright 2017. All rights reserved
+        </p>
+    </div>
 </div>
 {% block javascripts %}
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"

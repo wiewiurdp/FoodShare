@@ -9,6 +9,7 @@ use MongoDB\BSON\Timestamp;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\BrowserKit\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Validator\Constraints\Date;
@@ -151,25 +152,88 @@ class PostController extends Controller
     public
     function showAction(Request $request, Post $post)
     {
-        $message = null;
+        $errorMessage = null;
+        $message=null;
         if ($request->request->get('action') === "reserve") {
             if ($post->getPortions() > 0) {
-                if ($post->getUser() != $this->getUser()) {
-                    $post->setPortions($post->getPortions() - 1);
+
+                $user = $this->getUser();
+                $userUsername = $user->getUsername();
+                $userPhoneNumber = $user->getPhoneNumber();
+                $userEmail = $user->getEmail();
+                $postUser = $post->getUser();
+                $postUserUsername = $post->getUser()->getUsername();
+                $postUserEmail = $post->getUser()->getEmail();
+                $postTitle = $post->getTitle();
+                $postUserPhoneNumber = $postUser->getPhoneNumber();
+                $postUserAddress = $postUser->getAddress();
+
+                if ($postUser != $user) {
+                    $reservationQty = $request->request -> get('reservationQty');
+                    $message = "Zarezerwowałeś następną ilość porcji: $reservationQty";
+                    $post->setPortions($post->getPortions() - $reservationQty);
                     $transaction = new Transaction();
-                    $transaction->setUser($this->getUser());
+                    $transaction->setUser($user);
                     $transaction->setPosts([$post]);
                     $transaction->setPortions(1);
                     $transaction->setOrderDate();
                     $transaction->setRating(0);
-                    $transaction->setCreationDate();
+                    $transaction->setPortions($reservationQty);
                     $em = $this->getDoctrine()->getManager();
                     $em->persist($post);
                     $em->persist($transaction);
                     $em->flush();
-//                TODO: add sending email form
+                    $emailToPostUser = \Swift_Message::newInstance()
+                        ->setSubject('Wiadomość od aplikacji FoodSharer')
+                        ->setFrom('sowietyszyn@tlen.pl')
+                        ->setTo($postUserEmail)
+                        ->setBody("
+                        <html>
+                        <body>
+                        <h2>Witaj $postUserUsername,</h2>
+                        <br>
+                        Użytkownik: <b>$userUsername</b>, właśnie zarezerwował jedna porcję Twojej potrawy o nazwie<b> $postTitle.</b><br>
+                                              <br>
+                                              Jeśli chcesz się z nim skontaktować to jego numer telefonu: <b>$userPhoneNumber</b>
+                                              <br>
+                                              <br>
+                                              Pozdrawiamy,<br>
+                                              Ekipa FoodSharer<br>
+                      
+                            
+                            
+                            </body>
+                            </html>
+                            ", 'text/html');
+                    $emailToUser = \Swift_Message::newInstance()
+                        ->setSubject('Wiadomość od aplikacji FoodSharer')
+                        ->setFrom('sowietyszyn@tlen.pl')
+                        ->setTo($userEmail)
+                        ->setBody("
+                        <html>
+                        <body>
+                        <h2>Witaj $userUsername,</h2>
+                        <br>
+                        Właśnie zarezerwowałeś jedna porcję potrawy użytkownika <b>$postUserUsername</b> o nazwie<b> $postTitle.</b><br>
+                                              <br>
+                                              Jeśli chcesz się z nim skontaktować: <br>
+                                              Numer telefonu: <b>$postUserPhoneNumber</b><br>
+                                              Adres: <b>$postUserAddress</b>
+                                              <br>
+                                              <br>
+                                              Pozdrawiamy,<br>
+                                              Ekipa FoodSharer<br>
+                      
+                            
+                            
+                            </body>
+                            </html>
+                            ", 'text/html');
+
+                    $this->get('mailer')->send($emailToPostUser);
+                    $this->get('mailer')->send($emailToUser);
                 } else {
-                    $message = 'Nie możesz rezerwować własnych posiłków';
+                    $errorMessage = 'Nie możesz rezerwować własnych posiłków';
                 }
             }
         }
@@ -179,7 +243,8 @@ class PostController extends Controller
             'post' => $post,
             'delete_form' => $deleteForm->createView(),
             'user' => $this->getUser(),
-            'message' => $message,
+            'errorMessage' => $errorMessage,
+            'message' =>$message
         ));
     }
 

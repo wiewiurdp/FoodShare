@@ -1,32 +1,92 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8" />
-    </head>
-    <body>
-        <div>
-            {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-                {{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }} |
-                <a href="{{ path('fos_user_security_logout') }}">
-                    {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
-                </a>
-            {% else %}
-                <a href="{{ path('fos_user_security_login') }}">{{ 'layout.login'|trans({}, 'FOSUserBundle') }}</a>
-            {% endif %}
-        </div>
-        {% if app.request.hasPreviousSession %}
-            {% for type, messages in app.session.flashbag.all() %}
-                {% for message in messages %}
-                    <div class="flash-{{ type }}">
-                        {{ message }}
-                    </div>
-                {% endfor %}
-            {% endfor %}
-        {% endif %}
+<head>
+    <meta charset="UTF-8"/>
+    <title>{% block title %}FoodSharer{% endblock %}</title>
+    {% block stylesheets %}
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.css">
+        <link rel="stylesheet" type="text/css" href="{{ asset('CSS/styleTemplate.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ asset('CSS/style.css') }}">
+    {% endblock %}
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet">
 
+</head>
+<body>
+<div>
+    <div class="header">
         <div>
-            {% block fos_user_content %}
-            {% endblock fos_user_content %}
+            <a href="{{ path('post_index') }}"><img src="{{ asset('images/logo.png') }}" alt="Logo"></a>
+
         </div>
-    </body>
+        {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+            {{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }} |
+            <a href="{{ path('fos_user_security_logout') }}">
+                {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
+            </a>
+        {% else %}
+            <a href="{{ path('fos_user_security_login') }}">{{ 'layout.login'|trans({}, 'FOSUserBundle') }}</a>
+        {% endif %}
+    </div>
+    {% if app.request.hasPreviousSession %}
+        {% for type, messages in app.session.flashbag.all() %}
+            {% for message in messages %}
+                <div class="flash-{{ type }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endfor %}
+    {% endif %}
+    <div class="body">
+        <div>
+            <div class="header">
+                <ul>
+                    <li class="current">
+                        <a href="{{ path('post_index') }}">Ogłoszenia</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('post_new') }}">Dodaj</a>
+                    </li>
+                    <li>
+                        <a href="featured.html">Użytkownik</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('search_form') }}">Szukaj</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('transaction_index') }}">Twoje rezerwacje</a>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </div>
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-5">
+                    {% block fos_user_content %}
+                    {% endblock fos_user_content %}
+                </div>
+            </div>
+        </div>
+    <div class="footer">
+        <div>
+            <p>
+                &copy; Copyright 2017. All rights reserved
+            </p>
+        </div>
+    </div>
+    {% block javascripts %}
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+                integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+                crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"
+                integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4"
+                crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"
+                integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1"
+                crossorigin="anonymous"></script>
+        <script src="{{ asset('js/post.js') }}"></script>
+    {% endblock %}
+</body>
 </html>

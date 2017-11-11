@@ -24,7 +24,7 @@
                     {% for trans in transaction.posts %}
                         <tr>
                             <td>
-                                {{ transaction.creationDate|date('d-m-Y H:i:s') }}
+                                {{ transaction.Date|date('d-m-Y H:i:s') }}
                             </td>
                             <td>
                                 <a href="{{ path('post_show', {'id': trans.id}) }}">   {{ trans.title }}</a>
@@ -51,10 +51,10 @@
                                         <input type="radio" name="rating" value="3"> 3
                                         <input type="radio" name="rating" value="4"> 4
                                         <input type="radio" name="rating" value="5"> 5
-                                        <input type="hidden" name="transactionId" value="{{transaction.id}}">
-                                        <input type="hidden" name="postId" value="{{trans.id}}">
-                                        <input type="hidden" name="userId" value="{{trans.user.id}}">
-                                        <input type="submit" value='Oceń' >
+                                        <input type="hidden" name="transactionId" value="{{ transaction.id }}">
+                                        <input type="hidden" name="postId" value="{{ trans.id }}">
+                                        <input type="hidden" name="userId" value="{{ trans.user.id }}">
+                                        <input type="submit" value='Oceń'>
                                     </form>
                                 {% endif %}
                             </td>
